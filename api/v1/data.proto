@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "dishes/api/v1";
+
+message SideDishes {
+  string id = 1;
+  string name = 2;
+  string remark = 3;
+  // 创建时间
+  google.protobuf.Timestamp create_time = 998;
+  // 更新时间
+  google.protobuf.Timestamp update_time = 999;
+}
+
+message Dishes {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+  string remark = 4;
+  // 创建时间
+  google.protobuf.Timestamp create_time = 998;
+  // 更新时间
+  google.protobuf.Timestamp update_time = 999;
+}

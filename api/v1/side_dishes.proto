@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+
+import "api/v1/data.proto";
+option go_package = "dishes/api/v1";
+
+
+service SideDishesService {
+  rpc CreateSideDishes (CreateSideDishesRequest) returns (CreateSideDishesResponse) {
+    option (google.api.http) = {
+      post: '/api/v1/side',
+      body: '*'
+    };
+  }
+
+  rpc UpdateSideDishes (UpdateSideDishesRequest) returns (UpdateSideDishesResponse) {
+    option (google.api.http) = {
+      put: '/api/v1/side',
+      body: '*'
+    };
+  }
+
+
+  rpc GetSideDishes (GetSideDishesRequest) returns (GetSideDishesResponse) {
+    option (google.api.http) = {
+      get: '/api/v1/side/{id}',
+    };
+  }
+
+
+  rpc DelSideDishes (DelSideDishesRequest) returns (DelSideDishesResponse) {
+    option (google.api.http) = {
+      delete: '/api/v1/side/del/{id}',
+    };
+  }
+}
+
+
+message CreateSideDishesRequest{
+  string name = 1;
+  string remark = 2;
+}
+
+message CreateSideDishesResponse{
+    SideDishes side_dishes = 1;
+}
+
+message UpdateSideDishesRequest{
+  string id = 1;
+  string name = 2;
+  string remark = 3;
+}
+
+message UpdateSideDishesResponse{
+  SideDishes side_dishes = 1;
+}
+
+message GetSideDishesRequest{
+  string id = 1;
+}
+
+message GetSideDishesResponse{
+  SideDishes side_dishes = 1;
+}
+
+message DelSideDishesRequest{
+  string id = 1;
+}
+
+message DelSideDishesResponse{
+}

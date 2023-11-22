@@ -1,0 +1,319 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/dishes.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "DishesService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/dish/create": {
+      "post": {
+        "operationId": "DishesService_CreateDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateDishesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DishesService"
+        ]
+      }
+    },
+    "/api/v1/dish/delete/{id}": {
+      "delete": {
+        "operationId": "DishesService_DelDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DelDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DishesService"
+        ]
+      }
+    },
+    "/api/v1/dish/get/{id}": {
+      "get": {
+        "operationId": "DishesService_GetDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "DishesService"
+        ]
+      }
+    },
+    "/api/v1/dish/list": {
+      "get": {
+        "operationId": "DishesService_ListDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "DishesService"
+        ]
+      }
+    },
+    "/api/v1/dish/update": {
+      "put": {
+        "operationId": "DishesService_UpdateDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateDishesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DishesService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateDishesRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateDishesResponse": {
+      "type": "object",
+      "properties": {
+        "dishes": {
+          "$ref": "#/definitions/v1Dishes"
+        }
+      }
+    },
+    "v1DelDishesResponse": {
+      "type": "object"
+    },
+    "v1Dishes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "create_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "更新时间"
+        }
+      }
+    },
+    "v1GetDishesResponse": {
+      "type": "object",
+      "properties": {
+        "dishes": {
+          "$ref": "#/definitions/v1Dishes"
+        }
+      }
+    },
+    "v1ListDishesResponse": {
+      "type": "object",
+      "properties": {
+        "dishes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Dishes"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1UpdateDishesRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdateDishesResponse": {
+      "type": "object",
+      "properties": {
+        "dishes": {
+          "$ref": "#/definitions/v1Dishes"
+        }
+      }
+    }
+  }
+}

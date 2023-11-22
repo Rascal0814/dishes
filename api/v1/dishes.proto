@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+import "api/v1/data.proto";
+
+option go_package = "dishes/api/v1";
+
+service DishesService {
+  rpc CreateDishes (CreateDishesRequest) returns (CreateDishesResponse) {
+    option (google.api.http) = {
+      post: '/api/v1/dish/create',
+      body: '*'
+    };
+  }
+
+  rpc GetDishes (GetDishesRequest) returns (GetDishesResponse) {
+    option (google.api.http) = {
+      get: '/api/v1/dish/get/{id}',
+    };
+  }
+
+  rpc DelDishes (DelDishesRequest) returns (DelDishesResponse) {
+    option (google.api.http) = {
+      delete: '/api/v1/dish/delete/{id}',
+    };
+  }
+
+  rpc UpdateDishes (UpdateDishesRequest) returns (UpdateDishesResponse) {
+    option (google.api.http) = {
+      put: '/api/v1/dish/update',
+      body: '*'
+    };
+  }
+
+  rpc ListDishes (ListDishesRequest) returns (ListDishesResponse) {
+    option (google.api.http) = {
+      get: '/api/v1/dish/list',
+    };
+  }
+}
+
+message UpdateDishesResponse{
+  Dishes dishes = 1;
+}
+
+message UpdateDishesRequest{
+  string id = 1  [(validate.rules).string.min_len = 1];
+  string name = 2 [(validate.rules).string.min_len = 5];
+  string logo = 3 [(validate.rules).string.min_len = 1];
+  string remark = 4 [(validate.rules).string.min_len = 1];
+}
+
+message DelDishesResponse{
+
+}
+
+message DelDishesRequest{
+  string id = 1 [(validate.rules).string.min_len = 0];
+}
+
+message GetDishesRequest{
+  string id = 1 [(validate.rules).string.min_len = 1];
+}
+
+message GetDishesResponse{
+  Dishes dishes = 1;
+}
+
+message ListDishesResponse{
+  repeated Dishes dishes = 1;
+  int64 total = 2;
+}
+
+message ListDishesRequest{
+  string name = 1;
+  int64 page_index = 888 [(validate.rules).int64.gt = 0];
+  int64 page_size = 889 [(validate.rules).int64.gte = 1];
+}
+
+message CreateDishesRequest {
+  string name = 1 [(validate.rules).string.min_len = 5];
+  string logo = 2 [(validate.rules).string.min_len = 1];
+  string remark = 3;
+}
+
+message CreateDishesResponse{
+    Dishes dishes = 1;
+}

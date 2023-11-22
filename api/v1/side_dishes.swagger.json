@@ -1,0 +1,248 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/side_dishes.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SideDishesService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/side": {
+      "post": {
+        "operationId": "SideDishesService_CreateSideDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSideDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateSideDishesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SideDishesService"
+        ]
+      },
+      "put": {
+        "operationId": "SideDishesService_UpdateSideDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSideDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSideDishesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SideDishesService"
+        ]
+      }
+    },
+    "/api/v1/side/del/{id}": {
+      "delete": {
+        "operationId": "SideDishesService_DelSideDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DelSideDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SideDishesService"
+        ]
+      }
+    },
+    "/api/v1/side/{id}": {
+      "get": {
+        "operationId": "SideDishesService_GetSideDishes",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSideDishesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SideDishesService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateSideDishesRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateSideDishesResponse": {
+      "type": "object",
+      "properties": {
+        "side_dishes": {
+          "$ref": "#/definitions/v1SideDishes"
+        }
+      }
+    },
+    "v1DelSideDishesResponse": {
+      "type": "object"
+    },
+    "v1GetSideDishesResponse": {
+      "type": "object",
+      "properties": {
+        "side_dishes": {
+          "$ref": "#/definitions/v1SideDishes"
+        }
+      }
+    },
+    "v1SideDishes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "create_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "更新时间"
+        }
+      }
+    },
+    "v1UpdateSideDishesRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdateSideDishesResponse": {
+      "type": "object",
+      "properties": {
+        "side_dishes": {
+          "$ref": "#/definitions/v1SideDishes"
+        }
+      }
+    }
+  }
+}
