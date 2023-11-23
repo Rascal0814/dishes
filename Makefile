@@ -1,10 +1,14 @@
 GOHOSTOS:=$(shell go env GOHOSTOS)
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
+override APP_NAME := dishes
+override KUBE_CONTEXT := $(shell kubectl config current-context)
+override KUBE_NAMESPACE := default
 override MYSQL_DSN :="root:123456@tcp(127.0.0.1:3306)/order-dishes"
 override MIGRATE_MYSQL_DSN := "mysql://"${MYSQL_DSN}
 override MIGRATION_DIR :=./migrations
-
+override GIT_REVISION := $(shell git rev-parse --short HEAD)
+override BUILD_TIME := $(shell date '+%y%m%d')
 override MIGRATION_OPTS := -database ${MIGRATE_MYSQL_DSN} -path $(MIGRATION_DIR)
 ifeq ($(GOHOSTOS), windows)
 	#the `find.exe` is different from `find` in bash/shell.
@@ -18,6 +22,10 @@ else
 	INTERNAL_PROTO_FILES=$(shell find internal -name *.proto)
 	API_PROTO_FILES=$(shell find api -name *.proto)
 endif
+
+override DOCKER_REGISTRY := docker.io/0814l
+override APP_IMAGE_NAME := $(DOCKER_REGISTRY)/$(APP_NAME)
+override APP_IMAGE_TAG := $(BUILD_TIME)-$(GIT_REVISION)
 
 .PHONY: init
 # init env
@@ -70,3 +78,26 @@ migrate-reply:
 
 gen-sql:
 	gentool -dsn $(MYSQL_DSN) -db "mysql" -outPath "./internal/dao/query" -onlyModel
+
+app:
+	docker build -t $(APP_IMAGE_NAME):$(APP_IMAGE_TAG) -f Dockerfile .
+
+push:
+	docker push $(APP_IMAGE_NAME):$(APP_IMAGE_TAG)
+
+deploy: app push
+	@echo "Deploy by helm using context \033[0;31m$(KUBE_CONTEXT)\033[0m, waiting 5s to confirm"
+	@sleep 5
+	helm upgrade $(APP_NAME) devops/dishes \
+		-n $(KUBE_NAMESPACE) \
+		--set 'image.repository=$(APP_IMAGE_NAME)' \
+		--set 'image.tag=$(APP_IMAGE_TAG)' \
+		--install
+
+.PHONY: mysql
+mysql:
+	@echo "Deploy by helm using context \033[0;31m$(KUBE_CONTEXT)\033[0m, waiting 5s to confirm"
+	@sleep 5
+	helm upgrade mysql devops/mysql \
+		-n $(KUBE_NAMESPACE) \
+		--install
