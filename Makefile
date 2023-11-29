@@ -4,7 +4,7 @@ VERSION=$(shell git describe --tags --always)
 override APP_NAME := dishes
 override KUBE_CONTEXT := $(shell kubectl config current-context)
 override KUBE_NAMESPACE := default
-override MYSQL_DSN :="root:123456@tcp(127.0.0.1:3306)/order-dishes"
+override MYSQL_DSN :="root:123456@tcp(43.143.80.123:3306)/order-dishes"
 override MIGRATE_MYSQL_DSN := "mysql://"${MYSQL_DSN}
 override MIGRATION_DIR :=./migrations
 override GIT_REVISION := $(shell git rev-parse --short HEAD)
@@ -101,3 +101,11 @@ mysql:
 	helm upgrade mysql devops/mysql \
 		-n $(KUBE_NAMESPACE) \
 		--install
+
+d_mysql:
+	docker run -itd -v /opt/mysql:/var/lib/mysql --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
+
+docker_build:
+	ssh tx "docker run --restart=always -itd -p 8000:8000 --name dishes $(APP_IMAGE_NAME):$(APP_IMAGE_TAG)"
+
+docker_deploy: app push docker_build

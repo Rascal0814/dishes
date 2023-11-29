@@ -2,19 +2,19 @@ package dao
 
 import (
 	"context"
-	"dishes/order-dishes/internal/dao/model"
-	"github.com/Rascal0814/boot/orm"
 
-	blog "github.com/Rascal0814/boot/log"
+	"dishes/order-dishes/internal/dao/model"
+	"github.com/Rascal0814/boot/log"
+	"github.com/Rascal0814/boot/orm"
 	"gorm.io/gorm"
 )
 
 type Dishes struct {
 	db  *gorm.DB
-	log *blog.Logger
+	log *log.Logger
 }
 
-func NewDishes(db *gorm.DB, log *blog.Logger) *Dishes {
+func NewDishes(db *gorm.DB, log *log.Logger) *Dishes {
 	return &Dishes{db: db, log: log}
 }
 
@@ -51,7 +51,12 @@ func (d *Dishes) Del(ctx context.Context, id int64) error {
 func (d *Dishes) List(ctx context.Context, p *ListDishesParams) ([]*model.Dish, int64, error) {
 	var res = make([]*model.Dish, 0)
 	var total int64
-	err := d.db.WithContext(ctx).Model(&model.Dish{}).Where("name like ?", "%"+p.Name+"%").Count(&total).Limit(int((p.PageIndex - 1) * p.PageSize)).Offset(int(p.PageIndex - 1)).Find(&res).Error
+	t := d.db.WithContext(ctx).Model(&model.Dish{}).Count(&total).Limit(int((p.PageIndex - 1) * p.PageSize)).Offset(int(p.PageIndex - 1))
+
+	if p.Name != "" {
+		t = t.Where("name like ?", "%"+p.Name+"%")
+	}
+	err := t.Find(&res).Error
 	if err != nil {
 		return nil, 0, d.log.Error("get dish list error", err)
 	}

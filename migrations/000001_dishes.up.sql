@@ -6,6 +6,5 @@ CREATE TABLE dishes (
     `deleted_at` datetime default null comment '是否已删除',
     `created_at` datetime not null default now() comment '创建时间',
     `updated_at` datetime not null default now() on update now() comment '更新时间',
-    `_version` bigint not null default 0 comment '数据库记录更新的乐观锁',
     PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
