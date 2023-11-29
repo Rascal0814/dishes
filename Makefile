@@ -44,22 +44,6 @@ init:
 api:
 	buf mod update && buf generate
 
-# show help
-help:
-	@echo ''
-	@echo 'Usage:'
-	@echo ' make [target]'
-	@echo ''
-	@echo 'Targets:'
-	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
-	helpMessage = match(lastLine, /^# (.*)/); \
-		if (helpMessage) { \
-			helpCommand = substr($$1, 0, index($$1, ":")); \
-			helpMessage = substr(lastLine, RSTART + 2, RLENGTH); \
-			printf "\033[36m%-22s\033[0m %s\n", helpCommand,helpMessage; \
-		} \
-	} \
-	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
 
@@ -106,6 +90,10 @@ d_mysql:
 	docker run -itd -v /opt/mysql:/var/lib/mysql --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7
 
 docker_build:
-	ssh tx "docker run --restart=always -itd -p 8000:8000 --name dishes $(APP_IMAGE_NAME):$(APP_IMAGE_TAG)"
+	ssh tx "docker rm -f dishes"
+	ssh tx "docker images prune"
+	ssh tx "docker run --restart=always -itd -p 8000:8000 \
+			-v /root/app/order-dishes/config/local.yaml:/src/config/local.yaml \
+ 			--name dishes $(APP_IMAGE_NAME):$(APP_IMAGE_TAG)"
 
 docker_deploy: app push docker_build
