@@ -51,12 +51,7 @@ func (d *Dishes) Del(ctx context.Context, id int64) error {
 func (d *Dishes) List(ctx context.Context, p *ListDishesParams) ([]*model.Dish, int64, error) {
 	var res = make([]*model.Dish, 0)
 	var total int64
-	t := d.db.WithContext(ctx).Model(&model.Dish{}).Count(&total).Limit(int((p.PageIndex - 1) * p.PageSize)).Offset(int(p.PageIndex - 1))
-
-	if p.Name != "" {
-		t = t.Where("name like ?", "%"+p.Name+"%")
-	}
-	err := t.Find(&res).Error
+	err := d.db.WithContext(ctx).Model(&model.Dish{}).Where("name like ?", "%"+p.Name+"%").Count(&total).Limit(int((p.PageIndex) * p.PageSize)).Offset(int(p.PageIndex - 1)).Find(&res).Error
 	if err != nil {
 		return nil, 0, d.log.Error("get dish list error", err)
 	}
