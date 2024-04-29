@@ -10,20 +10,21 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameDish = "dishes"
+const TableNameOrder = "orders"
 
-// Dish mapped from table <dishes>
-type Dish struct {
+// Order mapped from table <orders>
+type Order struct {
 	ID        int64          `gorm:"column:id;primaryKey;autoIncrement:true;comment:主键" json:"id"`                        // 主键
-	Name      string         `gorm:"column:name;not null;comment:名称" json:"name"`                                         // 名称
-	Logo      string         `gorm:"column:logo;not null;comment:logo" json:"logo"`                                       // logo
+	DishID    int64          `gorm:"column:dish_id;not null;comment:菜品ID" json:"dish_id"`                                 // 菜品ID
+	Status    int32          `gorm:"column:status;not null;comment:订单状态 0未开始 1制作中 2已完成" json:"status"`                    // 订单状态 0未开始 1制作中 2已完成
+	Creator   int64          `gorm:"column:creator;not null;comment:创建人" json:"creator"`                                  // 创建人
 	Remark    string         `gorm:"column:remark;not null;comment:备注" json:"remark"`                                     // 备注
 	CreatedAt time.Time      `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP;comment:创建时间" json:"created_at"` // 创建时间
 	UpdatedAt time.Time      `gorm:"column:updated_at;not null;default:CURRENT_TIMESTAMP;comment:更新时间" json:"updated_at"` // 更新时间
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:是否已删除" json:"deleted_at"`                                   // 是否已删除
 }
 
-// TableName Dish's table name
-func (*Dish) TableName() string {
-	return TableNameDish
+// TableName Order's table name
+func (*Order) TableName() string {
+	return TableNameOrder
 }

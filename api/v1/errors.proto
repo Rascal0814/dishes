@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package v1;
 
-option go_package = "dishes/api/v1";
+option go_package = "dishes/order-dishes/api/v1";
 
 enum ErrorReason {
   GREETER_UNSPECIFIED = 0;

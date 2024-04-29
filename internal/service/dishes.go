@@ -15,13 +15,13 @@ import (
 type DishesService struct {
 	v1.UnimplementedDishesServiceServer
 
-	dao  *dao.Dishes
+	dao  *dao.DishDao
 	log  *blog.Logger
 	dto  *dto.Dto
 	snow *snowflake.Snowflake
 }
 
-func NewDishesService(dao *dao.Dishes, log *blog.Logger, dto *dto.Dto, snow *snowflake.Snowflake) *DishesService {
+func NewDishesService(dao *dao.DishDao, log *blog.Logger, dto *dto.Dto, snow *snowflake.Snowflake) *DishesService {
 	return &DishesService{dao: dao, log: log, dto: dto, snow: snow}
 }
 
@@ -29,7 +29,7 @@ func (d *DishesService) GetDishes(ctx context.Context, request *v1.GetDishesRequ
 	m, err := d.dao.Get(ctx, d.snow.ParseId(request.Id))
 	if err != nil {
 		_ = d.log.Error("get dish error", err)
-		return nil, api.ErrDishesNotFound
+		return nil, api.ErrNotFound
 	}
 	return &v1.GetDishesResponse{Dishes: d.dto.Dishes(m)}, nil
 }
@@ -38,7 +38,7 @@ func (d *DishesService) DelDishes(ctx context.Context, request *v1.DelDishesRequ
 	err := d.dao.Del(ctx, d.snow.ParseId(request.Id))
 	if err != nil {
 		_ = d.log.Error("del dish error", err)
-		return nil, api.ErrDishesDelete
+		return nil, api.ErrDelete
 	}
 	return &v1.DelDishesResponse{}, err
 }
@@ -47,7 +47,7 @@ func (d *DishesService) UpdateDishes(ctx context.Context, request *v1.UpdateDish
 	info, err := d.dao.Get(ctx, d.snow.ParseId(request.Id))
 	if err != nil {
 		_ = d.log.Error("get dish error", err)
-		return nil, api.ErrDishesNotFound
+		return nil, api.ErrNotFound
 	}
 
 	info.Name = request.Name
@@ -56,7 +56,7 @@ func (d *DishesService) UpdateDishes(ctx context.Context, request *v1.UpdateDish
 	info, err = d.dao.Update(ctx, info)
 	if err != nil {
 		_ = d.log.Error("update dish error", err)
-		return nil, api.ErrDishesUpdate
+		return nil, api.ErrUpdate
 	}
 	return &v1.UpdateDishesResponse{
 		Dishes: d.dto.Dishes(info),
@@ -64,16 +64,13 @@ func (d *DishesService) UpdateDishes(ctx context.Context, request *v1.UpdateDish
 }
 
 func (d *DishesService) ListDishes(ctx context.Context, request *v1.ListDishesRequest) (*v1.ListDishesResponse, error) {
-	list, total, err := d.dao.List(ctx, &dao.ListDishesParams{
-		Pager: orm.Pager{
-			PageIndex: request.PageIndex,
-			PageSize:  request.PageSize,
-		},
-		Name: request.Name,
+	list, total, err := d.dao.List(ctx, &orm.Pager{
+		PageIndex: request.PageIndex,
+		PageSize:  request.PageSize,
 	})
 	if err != nil {
 		_ = d.log.Error("get dish list error", err)
-		return nil, err
+		return nil, api.ErrList
 	}
 
 	var resp = &v1.ListDishesResponse{
@@ -98,7 +95,7 @@ func (d *DishesService) CreateDishes(ctx context.Context, request *v1.CreateDish
 
 	if err != nil {
 		_ = d.log.Error("make dishes error", err)
-		return nil, api.ErrDishesInsert
+		return nil, api.ErrInsert
 	}
 	return &v1.CreateDishesResponse{Dishes: d.dto.Dishes(m)}, nil
 }

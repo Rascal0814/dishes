@@ -264,7 +264,8 @@
           "format": "date-time",
           "title": "更新时间"
         }
-      }
+      },
+      "title": "Dishes 菜品"
     },
     "v1GetDishesResponse": {
       "type": "object",

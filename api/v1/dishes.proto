@@ -7,7 +7,7 @@ import "validate/validate.proto";
 
 import "api/v1/data.proto";
 
-option go_package = "dishes/api/v1";
+option go_package = "dishes/order-dishes/api/v1";
 
 service DishesService {
   rpc CreateDishes (CreateDishesRequest) returns (CreateDishesResponse) {

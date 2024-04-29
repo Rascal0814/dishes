@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/v1/side_dishes.proto",
+    "title": "api/v1/order.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "SideDishesService"
+      "name": "OrdersService"
     }
   ],
   "consumes": [
@@ -16,14 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/side": {
+    "/api/v1/order/create": {
       "post": {
-        "operationId": "SideDishesService_CreateSideDishes",
+        "operationId": "OrdersService_CreateOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateSideDishesResponse"
+              "$ref": "#/definitions/v1CreateOrdersResponse"
             }
           },
           "default": {
@@ -39,53 +39,23 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateSideDishesRequest"
+              "$ref": "#/definitions/v1CreateOrdersRequest"
             }
           }
         ],
         "tags": [
-          "SideDishesService"
-        ]
-      },
-      "put": {
-        "operationId": "SideDishesService_UpdateSideDishes",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UpdateSideDishesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateSideDishesRequest"
-            }
-          }
-        ],
-        "tags": [
-          "SideDishesService"
+          "OrdersService"
         ]
       }
     },
-    "/api/v1/side/del/{id}": {
+    "/api/v1/order/delete/{id}": {
       "delete": {
-        "operationId": "SideDishesService_DelSideDishes",
+        "operationId": "OrdersService_DelOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DelSideDishesResponse"
+              "$ref": "#/definitions/v1DelOrdersResponse"
             }
           },
           "default": {
@@ -104,18 +74,18 @@
           }
         ],
         "tags": [
-          "SideDishesService"
+          "OrdersService"
         ]
       }
     },
-    "/api/v1/side/{id}": {
+    "/api/v1/order/get/{id}": {
       "get": {
-        "operationId": "SideDishesService_GetSideDishes",
+        "operationId": "OrdersService_GetOrders",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetSideDishesResponse"
+              "$ref": "#/definitions/v1GetOrdersResponse"
             }
           },
           "default": {
@@ -134,7 +104,83 @@
           }
         ],
         "tags": [
-          "SideDishesService"
+          "OrdersService"
+        ]
+      }
+    },
+    "/api/v1/order/list": {
+      "get": {
+        "operationId": "OrdersService_ListOrders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrdersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page_index",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "OrdersService"
+        ]
+      }
+    },
+    "/api/v1/order/update": {
+      "put": {
+        "operationId": "OrdersService_UpdateOrders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateOrdersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateOrdersRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OrdersService"
         ]
       }
     }
@@ -168,43 +214,68 @@
         }
       }
     },
-    "v1CreateSideDishesRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "remark": {
-          "type": "string"
-        }
-      }
-    },
-    "v1CreateSideDishesResponse": {
-      "type": "object",
-      "properties": {
-        "side_dishes": {
-          "$ref": "#/definitions/v1SideDishes"
-        }
-      }
-    },
-    "v1DelSideDishesResponse": {
-      "type": "object"
-    },
-    "v1GetSideDishesResponse": {
-      "type": "object",
-      "properties": {
-        "side_dishes": {
-          "$ref": "#/definitions/v1SideDishes"
-        }
-      }
-    },
-    "v1SideDishes": {
+    "v1CreateOrdersRequest": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
         },
-        "name": {
+        "dish_id": {
+          "type": "string"
+        },
+        "remake": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateOrdersResponse": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "$ref": "#/definitions/v1Order"
+        }
+      }
+    },
+    "v1DelOrdersResponse": {
+      "type": "object"
+    },
+    "v1GetOrdersResponse": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "$ref": "#/definitions/v1Order"
+        }
+      }
+    },
+    "v1ListOrdersResponse": {
+      "type": "object",
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Order"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dish_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "creator": {
           "type": "string"
         },
         "remark": {
@@ -220,27 +291,38 @@
           "format": "date-time",
           "title": "更新时间"
         }
-      }
+      },
+      "title": "Order 订单"
     },
-    "v1UpdateSideDishesRequest": {
+    "v1OrderStatus": {
+      "type": "string",
+      "enum": [
+        "created",
+        "doing",
+        "finish"
+      ],
+      "default": "created",
+      "title": "OrderStatus 状态枚举"
+    },
+    "v1UpdateOrdersRequest": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
         },
-        "name": {
+        "dish_id": {
           "type": "string"
         },
-        "remark": {
-          "type": "string"
+        "status": {
+          "$ref": "#/definitions/v1OrderStatus"
         }
       }
     },
-    "v1UpdateSideDishesResponse": {
+    "v1UpdateOrdersResponse": {
       "type": "object",
       "properties": {
-        "side_dishes": {
-          "$ref": "#/definitions/v1SideDishes"
+        "order": {
+          "$ref": "#/definitions/v1Order"
         }
       }
     }

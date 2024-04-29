@@ -24,3 +24,15 @@ func (d *Dto) Dishes(m *model.Dish) *v1.Dishes {
 		UpdateTime: timestamppb.New(m.UpdatedAt),
 	}
 }
+
+func (d *Dto) Orders(m *model.Order) *v1.Order {
+	return &v1.Order{
+		Id:         snowflake.ID(m.ID).String(),
+		DishId:     snowflake.ID(m.DishID).String(),
+		Status:     v1.OrderStatus_name[m.Status],
+		Creator:    "",
+		Remark:     m.Remark,
+		CreateTime: timestamppb.New(m.CreatedAt),
+		UpdateTime: timestamppb.New(m.UpdatedAt),
+	}
+}

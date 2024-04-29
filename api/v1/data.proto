@@ -5,18 +5,9 @@ package v1;
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "dishes/api/v1";
+option go_package = "dishes/order-dishes/api/v1";
 
-message SideDishes {
-  string id = 1;
-  string name = 2;
-  string remark = 3;
-  // 创建时间
-  google.protobuf.Timestamp create_time = 998;
-  // 更新时间
-  google.protobuf.Timestamp update_time = 999;
-}
-
+// Dishes 菜品
 message Dishes {
   string id = 1;
   string name = 2;
@@ -26,4 +17,24 @@ message Dishes {
   google.protobuf.Timestamp create_time = 998;
   // 更新时间
   google.protobuf.Timestamp update_time = 999;
+}
+
+// Order 订单
+message Order {
+  string id = 1;
+  string dish_id = 2;
+  string status = 3;
+  string creator = 4;
+  string remark = 5;
+  // 创建时间
+  google.protobuf.Timestamp create_time = 998;
+  // 更新时间
+  google.protobuf.Timestamp update_time = 999;
+}
+
+// OrderStatus 状态枚举
+enum OrderStatus {
+  created = 0;
+  doing = 1;
+  finish = 2;
 }

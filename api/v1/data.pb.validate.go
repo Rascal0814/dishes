@@ -35,169 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on SideDishes with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *SideDishes) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on SideDishes with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in SideDishesMultiError, or
-// nil if none found.
-func (m *SideDishes) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *SideDishes) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Name
-
-	// no validation rules for Remark
-
-	if all {
-		switch v := interface{}(m.GetCreateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SideDishesValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SideDishesValidationError{
-					field:  "CreateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SideDishesValidationError{
-				field:  "CreateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if all {
-		switch v := interface{}(m.GetUpdateTime()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, SideDishesValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, SideDishesValidationError{
-					field:  "UpdateTime",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return SideDishesValidationError{
-				field:  "UpdateTime",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if len(errors) > 0 {
-		return SideDishesMultiError(errors)
-	}
-
-	return nil
-}
-
-// SideDishesMultiError is an error wrapping multiple validation errors
-// returned by SideDishes.ValidateAll() if the designated constraints aren't met.
-type SideDishesMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m SideDishesMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m SideDishesMultiError) AllErrors() []error { return m }
-
-// SideDishesValidationError is the validation error returned by
-// SideDishes.Validate if the designated constraints aren't met.
-type SideDishesValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e SideDishesValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e SideDishesValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e SideDishesValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e SideDishesValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e SideDishesValidationError) ErrorName() string { return "SideDishesValidationError" }
-
-// Error satisfies the builtin error interface
-func (e SideDishesValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sSideDishes.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = SideDishesValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = SideDishesValidationError{}
-
 // Validate checks the field values on Dishes with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -361,3 +198,169 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DishesValidationError{}
+
+// Validate checks the field values on Order with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Order) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Order with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in OrderMultiError, or nil if none found.
+func (m *Order) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Order) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for DishId
+
+	// no validation rules for Status
+
+	// no validation rules for Creator
+
+	// no validation rules for Remark
+
+	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, OrderValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, OrderValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return OrderValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetUpdateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, OrderValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, OrderValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return OrderValidationError{
+				field:  "UpdateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return OrderMultiError(errors)
+	}
+
+	return nil
+}
+
+// OrderMultiError is an error wrapping multiple validation errors returned by
+// Order.ValidateAll() if the designated constraints aren't met.
+type OrderMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m OrderMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m OrderMultiError) AllErrors() []error { return m }
+
+// OrderValidationError is the validation error returned by Order.Validate if
+// the designated constraints aren't met.
+type OrderValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OrderValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OrderValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OrderValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OrderValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OrderValidationError) ErrorName() string { return "OrderValidationError" }
+
+// Error satisfies the builtin error interface
+func (e OrderValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOrder.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OrderValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OrderValidationError{}

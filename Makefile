@@ -38,6 +38,7 @@ init:
 	go install github.com/envoyproxy/protoc-gen-validate@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	go install gorm.io/gen/tools/gentool@latest
+	go install github.com/Rascal0814/boot/tools/boot@latest
 
 # generate api proto
 .PHONY: api
@@ -61,7 +62,11 @@ migrate-reply:
 	migrate $(MIGRATION_OPTS) -verbose up
 
 gen-sql:
-	gentool -dsn $(MYSQL_DSN) -db "mysql" -outPath "./internal/dao/query" -onlyModel
+	gentool -dsn $(MYSQL_DSN) -db "mysql" -outPath "./internal/dao/model" -onlyModel
+
+gen-crud:
+	boot crud --dsn $(MIGRATE_MYSQL_DSN) --pkg "dishes/order-dishes/internal/dao/model" -o "internal/dao"
+
 
 app:
 	docker build -t $(APP_IMAGE_NAME):$(APP_IMAGE_TAG) -f Dockerfile .
