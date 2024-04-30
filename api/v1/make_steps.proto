@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+import "api/v1/data.proto";
+
+option go_package = "dishes/order-dishes/api/v1";
+
+service MakeStepsService {
+  rpc CreateMakeSteps (CreateMakeStepsRequest) returns (CreateMakeStepsResponse) {
+    option (google.api.http) = {
+      post: '/api/v1/make-step/create',
+      body: '*'
+    };
+  }
+
+  rpc GetMakeSteps (GetMakeStepsRequest) returns (GetMakeStepsResponse) {
+    option (google.api.http) = {
+      get: '/api/v1/make-step/get/{id}',
+    };
+  }
+
+  rpc DelMakeSteps (DelMakeStepsRequest) returns (DelMakeStepsResponse) {
+    option (google.api.http) = {
+      delete: '/api/v1/make-step/delete/{id}',
+    };
+  }
+
+  rpc DelMakeStepsByDishId (DelMakeStepsByDishIdRequest) returns (DelMakeStepsByDishIdResponse) {
+    option (google.api.http) = {
+      delete: '/api/v1/make-step/delete/dish/{dish_id}',
+    };
+  }
+
+  rpc UpdateMakeSteps (UpdateMakeStepsRequest) returns (UpdateMakeStepsResponse) {
+    option (google.api.http) = {
+      put: '/api/v1/make-step/update',
+      body: '*'
+    };
+  }
+
+  rpc GetDishesMakeSteps (DishesMakeStepsRequest) returns (DishesMakeStepsResponse) {
+    option (google.api.http) = {
+      get: '/api/v1/make-step/dish',
+    };
+  }
+}
+
+message DelMakeStepsByDishIdRequest{
+  string dish_id = 1 [(validate.rules).string.min_len = 1];
+}
+message DelMakeStepsByDishIdResponse{
+
+}
+
+message UpdateMakeStepsResponse{
+  MakeStep make_step = 1;
+}
+
+message UpdateMakeStepsRequest{
+  string id = 1  [(validate.rules).string.min_len = 1];
+  string dish_id = 2 [(validate.rules).string.min_len = 1];
+  int64 step = 3 [(validate.rules).int64.gt = 0];
+  string content = 4 [(validate.rules).string.min_len = 1];
+}
+
+message DelMakeStepsResponse{
+}
+
+message DelMakeStepsRequest{
+  string id = 1 [(validate.rules).string.min_len = 0];
+}
+
+message GetMakeStepsRequest{
+  string id = 1 [(validate.rules).string.min_len = 1];
+}
+
+message GetMakeStepsResponse{
+  MakeStep make_step = 1;
+}
+
+message DishesMakeStepsResponse{
+  repeated MakeStep steps = 1;
+}
+
+message DishesMakeStepsRequest{
+  string dish_id = 1;
+}
+
+message CreateMakeStepsRequest {
+  string dish_id = 1 [(validate.rules).string.min_len = 1];
+  repeated CreateMakeStep steps = 2 [(validate.rules).repeated.min_items = 1];
+}
+
+message CreateMakeStep {
+  int64 step = 1 [(validate.rules).int64.gt = 0];
+  string content = 2 [(validate.rules).string.min_len = 1];
+}
+
+message CreateMakeStepsResponse{
+  repeated MakeStep steps = 1;
+}

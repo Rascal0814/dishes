@@ -10,7 +10,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *config.Server, dishes *service.DishesService, order *service.OrderService) (*grpc.Server, error) {
+func NewGRPCServer(c *config.Server, dishes *service.DishesService, order *service.OrderService, makeStep *service.MakeStepsService) (*grpc.Server, error) {
 	var opts = kratosmiddleware.DefaultGrpcMiddleWare
 	if c.Grpc.Addr != "" {
 		opts = append(opts, grpc.Address(c.Grpc.Addr))
@@ -21,5 +21,6 @@ func NewGRPCServer(c *config.Server, dishes *service.DishesService, order *servi
 	srv := grpc.NewServer(opts...)
 	v1.RegisterDishesServiceServer(srv, dishes)
 	v1.RegisterOrdersServiceServer(srv, order)
+	v1.RegisterMakeStepsServiceServer(srv, makeStep)
 	return srv, nil
 }

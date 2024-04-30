@@ -45,11 +45,13 @@ func wireApp(serviceName string) (*kratos.App, func(), error) {
 	dishesService := service.NewDishesService(dishDao, logger, dtoDto, snowflakeSnowflake)
 	orderDao := dao.NewOrderDao(db, logger)
 	orderService := service.NewOrderService(orderDao, logger, dtoDto, snowflakeSnowflake)
-	grpcServer, err := server.NewGRPCServer(configServer, dishesService, orderService)
+	makeStepDao := dao.NewMakeStepDao(db, logger)
+	makeStepsService := service.NewMakeStepsService(makeStepDao, logger, dtoDto, snowflakeSnowflake)
+	grpcServer, err := server.NewGRPCServer(configServer, dishesService, orderService, makeStepsService)
 	if err != nil {
 		return nil, nil, err
 	}
-	httpServer, err := server.NewHTTPServer(configServer, dishesService, orderService)
+	httpServer, err := server.NewHTTPServer(configServer, dishesService, orderService, makeStepsService)
 	if err != nil {
 		return nil, nil, err
 	}

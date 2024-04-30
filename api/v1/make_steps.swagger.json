@@ -1,0 +1,357 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/v1/make_steps.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MakeStepsService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/make-step/create": {
+      "post": {
+        "operationId": "MakeStepsService_CreateMakeSteps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateMakeStepsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateMakeStepsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    },
+    "/api/v1/make-step/delete/dish/{dish_id}": {
+      "delete": {
+        "operationId": "MakeStepsService_DelMakeStepsByDishId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DelMakeStepsByDishIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dish_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    },
+    "/api/v1/make-step/delete/{id}": {
+      "delete": {
+        "operationId": "MakeStepsService_DelMakeSteps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DelMakeStepsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    },
+    "/api/v1/make-step/dish": {
+      "get": {
+        "operationId": "MakeStepsService_GetDishesMakeSteps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DishesMakeStepsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dish_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    },
+    "/api/v1/make-step/get/{id}": {
+      "get": {
+        "operationId": "MakeStepsService_GetMakeSteps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMakeStepsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    },
+    "/api/v1/make-step/update": {
+      "put": {
+        "operationId": "MakeStepsService_UpdateMakeSteps",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMakeStepsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMakeStepsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MakeStepsService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateMakeStep": {
+      "type": "object",
+      "properties": {
+        "step": {
+          "type": "string",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateMakeStepsRequest": {
+      "type": "object",
+      "properties": {
+        "dish_id": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CreateMakeStep"
+          }
+        }
+      }
+    },
+    "v1CreateMakeStepsResponse": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MakeStep"
+          }
+        }
+      }
+    },
+    "v1DelMakeStepsByDishIdResponse": {
+      "type": "object"
+    },
+    "v1DelMakeStepsResponse": {
+      "type": "object"
+    },
+    "v1DishesMakeStepsResponse": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MakeStep"
+          }
+        }
+      }
+    },
+    "v1GetMakeStepsResponse": {
+      "type": "object",
+      "properties": {
+        "make_step": {
+          "$ref": "#/definitions/v1MakeStep"
+        }
+      }
+    },
+    "v1MakeStep": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dish_id": {
+          "type": "string"
+        },
+        "step": {
+          "type": "string",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        },
+        "creator": {
+          "type": "string",
+          "format": "int64"
+        },
+        "create_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "创建时间"
+        },
+        "update_time": {
+          "type": "string",
+          "format": "date-time",
+          "title": "更新时间"
+        }
+      }
+    },
+    "v1UpdateMakeStepsRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dish_id": {
+          "type": "string"
+        },
+        "step": {
+          "type": "string",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdateMakeStepsResponse": {
+      "type": "object",
+      "properties": {
+        "make_step": {
+          "$ref": "#/definitions/v1MakeStep"
+        }
+      }
+    }
+  }
+}

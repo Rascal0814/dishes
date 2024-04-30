@@ -36,3 +36,15 @@ func (d *Dto) Orders(m *model.Order) *v1.Order {
 		UpdateTime: timestamppb.New(m.UpdatedAt),
 	}
 }
+
+func (d *Dto) MakeSteps(m *model.MakeStep) *v1.MakeStep {
+	return &v1.MakeStep{
+		Id:         snowflake.ID(m.ID).String(),
+		DishId:     snowflake.ID(m.DishID).String(),
+		Step:       m.Step,
+		Content:    m.Content,
+		Creator:    m.Creator,
+		CreateTime: timestamppb.New(m.CreatedAt),
+		UpdateTime: timestamppb.New(m.UpdatedAt),
+	}
+}

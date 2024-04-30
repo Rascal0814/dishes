@@ -364,3 +364,170 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = OrderValidationError{}
+
+// Validate checks the field values on MakeStep with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *MakeStep) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MakeStep with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in MakeStepMultiError, or nil
+// if none found.
+func (m *MakeStep) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MakeStep) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for DishId
+
+	// no validation rules for Step
+
+	// no validation rules for Content
+
+	// no validation rules for Creator
+
+	if all {
+		switch v := interface{}(m.GetCreateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MakeStepValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MakeStepValidationError{
+					field:  "CreateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MakeStepValidationError{
+				field:  "CreateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetUpdateTime()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MakeStepValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MakeStepValidationError{
+					field:  "UpdateTime",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUpdateTime()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MakeStepValidationError{
+				field:  "UpdateTime",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return MakeStepMultiError(errors)
+	}
+
+	return nil
+}
+
+// MakeStepMultiError is an error wrapping multiple validation errors returned
+// by MakeStep.ValidateAll() if the designated constraints aren't met.
+type MakeStepMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MakeStepMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MakeStepMultiError) AllErrors() []error { return m }
+
+// MakeStepValidationError is the validation error returned by
+// MakeStep.Validate if the designated constraints aren't met.
+type MakeStepValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MakeStepValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MakeStepValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MakeStepValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MakeStepValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MakeStepValidationError) ErrorName() string { return "MakeStepValidationError" }
+
+// Error satisfies the builtin error interface
+func (e MakeStepValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMakeStep.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MakeStepValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MakeStepValidationError{}

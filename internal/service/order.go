@@ -63,6 +63,7 @@ func (o OrderService) UpdateOrders(ctx context.Context, request *v1.UpdateOrders
 	}
 
 	info.DishID = o.snow.ParseId(request.DishId)
+	info.Status = int32(request.Status)
 	info, err = o.dao.Update(ctx, info)
 	if err != nil {
 		_ = o.log.Error("update order error", err)

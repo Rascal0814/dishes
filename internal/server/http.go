@@ -9,7 +9,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *config.Server, dishes *service.DishesService, order *service.OrderService) (*http.Server, error) {
+func NewHTTPServer(c *config.Server, dishes *service.DishesService, order *service.OrderService, makeStep *service.MakeStepsService) (*http.Server, error) {
 	var opts = kratosmiddleware.DefaultHttpMiddleWare
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
@@ -23,5 +23,6 @@ func NewHTTPServer(c *config.Server, dishes *service.DishesService, order *servi
 	srv := http.NewServer(opts...)
 	v1.RegisterDishesServiceHTTPServer(srv, dishes)
 	v1.RegisterOrdersServiceHTTPServer(srv, order)
+	v1.RegisterMakeStepsServiceHTTPServer(srv, makeStep)
 	return srv, nil
 }
