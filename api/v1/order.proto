@@ -80,9 +80,8 @@ message ListOrdersRequest{
 }
 
 message CreateOrdersRequest {
-  string id = 1  [(validate.rules).string.min_len = 1];
-  string dish_id = 2 [(validate.rules).string.min_len = 1];
-  string remake = 3;
+  string dish_id = 1 [(validate.rules).string.min_len = 1];
+  string remake = 2;
 }
 
 message CreateOrdersResponse{

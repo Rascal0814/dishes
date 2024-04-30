@@ -35,7 +35,7 @@ func (dao *DishDao) Insert(ctx context.Context, f func(m *model.Dish) error) (*m
 
 func (dao *DishDao) Get(ctx context.Context, id int64) (*model.Dish, error) {
 	var m = &model.Dish{}
-	err := dao.db.WithContext(ctx).Where("id = ?", id).Find(m).Error
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(m).Error
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ func (dao *MakeStepDao) Insert(ctx context.Context, f func(m *model.MakeStep) er
 
 func (dao *MakeStepDao) Get(ctx context.Context, id int64) (*model.MakeStep, error) {
 	var m = &model.MakeStep{}
-	err := dao.db.WithContext(ctx).Where("id = ?", id).Find(m).Error
+	err := dao.db.WithContext(ctx).Where("id = ?", id).First(m).Error
 	if err != nil {
 		return nil, err
 	}

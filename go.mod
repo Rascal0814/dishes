@@ -3,7 +3,7 @@ module dishes/order-dishes
 go 1.22
 
 require (
-	github.com/Rascal0814/boot v1.0.6
+	github.com/Rascal0814/boot v1.0.7
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/envoyproxy/protoc-gen-validate v1.0.4
 	github.com/go-kratos/kratos/v2 v2.7.0

@@ -4,61 +4,74 @@
 //go:build !wireinject
 // +build !wireinject
 
-package main
+package test
 
 import (
 	"dishes/order-dishes/config"
 	"dishes/order-dishes/internal/dao"
 	"dishes/order-dishes/internal/dto"
-	"dishes/order-dishes/internal/server"
 	"dishes/order-dishes/internal/service"
 	config2 "github.com/Rascal0814/boot/config"
-	"github.com/Rascal0814/boot/kratos/depend"
 	"github.com/Rascal0814/boot/log"
 	"github.com/Rascal0814/boot/snowflake"
-	"github.com/go-kratos/kratos/v2"
-)
-
-import (
-	_ "go.uber.org/automaxprocs"
 )
 
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(serviceName string) (*kratos.App, func(), error) {
-	configConfig, err := config.NewConfig()
-	if err != nil {
-		return nil, nil, err
+func wireApp(serviceName string) (*TestApp, error) {
+	configConfig, err2 := config.NewConfig()
+	if err2 != nil {
+		return nil, err
 	}
-	data := configConfig.Data
-	registrar := depend.NewConsulRegistrar(data)
-	configServer := configConfig.Server
 	db := config2.DefaultDB(configConfig)
 	logger := log.NewLogger(serviceName)
 	dishDao := dao.NewDishDao(db, logger)
 	dtoDto := dto.NewDto()
-	snowflakeSnowflake, err := snowflake.NewSnowflake()
-	if err != nil {
-		return nil, nil, err
+	snowflakeSnowflake, err2 := snowflake.NewSnowflake()
+	if err2 != nil {
+		return nil, err
 	}
 	dishesService := service.NewDishesService(dishDao, logger, dtoDto, snowflakeSnowflake)
 	orderDao := dao.NewOrderDao(db, logger)
 	orderService := service.NewOrderService(orderDao, logger, dtoDto, snowflakeSnowflake)
 	makeStepDao := dao.NewMakeStepDao(db, logger)
 	makeStepsService := service.NewMakeStepsService(makeStepDao, logger, dtoDto, snowflakeSnowflake)
-	grpcServer, err := server.NewGRPCServer(configServer, dishesService, orderService, makeStepsService)
-	if err != nil {
-		return nil, nil, err
+	testApp, err2 := newTestApp(dishesService, orderService, makeStepsService, configConfig, logger)
+	if err2 != nil {
+		return nil, err
 	}
-	httpServer, err := server.NewHTTPServer(configServer, dishesService, orderService, makeStepsService)
-	if err != nil {
-		return nil, nil, err
-	}
-	app, err := newApp(registrar, grpcServer, httpServer)
-	if err != nil {
-		return nil, nil, err
-	}
-	return app, func() {
+	return testApp, nil
+}
+
+// wire.go:
+
+type TestApp struct {
+	Dishes   *service.DishesService
+	Orders   *service.OrderService
+	MakeStep *service.MakeStepsService
+	Config   *config2.Config
+	log      *log.Logger
+}
+
+func newTestApp(Dishes *service.DishesService, Orders *service.OrderService, MakeStep *service.MakeStepsService, Config *config2.Config, log2 *log.Logger) (*TestApp, error) {
+	return &TestApp{
+		Dishes:   Dishes,
+		Orders:   Orders,
+		MakeStep: MakeStep,
+		Config:   Config,
+		log:      log2,
 	}, nil
+}
+
+var (
+	app *TestApp
+	err error
+)
+
+func init() {
+	app, err = wireApp("test")
+	if err != nil {
+		panic(err)
+	}
 }
