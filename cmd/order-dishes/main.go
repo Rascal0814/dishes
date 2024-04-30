@@ -1,6 +1,9 @@
 package main
 
 import (
+	"flag"
+	bc "github.com/Rascal0814/boot/config"
+	blog "github.com/Rascal0814/boot/log"
 	"github.com/go-kratos/kratos/v2/registry"
 	"os"
 
@@ -14,9 +17,14 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name  = "order-dishes"
-	id, _ = os.Hostname()
+	Name     = "order-dishes"
+	id, _    = os.Hostname()
+	flagConf string
 )
+
+func init() {
+	flag.StringVar(&flagConf, "conf", "config", "config path, eg: -conf config.yaml")
+}
 
 func newApp(r registry.Registrar, gs *grpc.Server, hs *http.Server) (*kratos.App, error) {
 	return kratos.New(
@@ -32,7 +40,7 @@ func newApp(r registry.Registrar, gs *grpc.Server, hs *http.Server) (*kratos.App
 }
 
 func main() {
-	app, cleanup, err := wireApp(Name)
+	app, cleanup, err := wireApp(blog.ServiceName(Name), bc.CPath(flagConf))
 	if err != nil {
 		panic(err)
 	}

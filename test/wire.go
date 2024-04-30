@@ -8,6 +8,7 @@ import (
 	"dishes/order-dishes/internal/dao"
 	"dishes/order-dishes/internal/dto"
 	"dishes/order-dishes/internal/service"
+	"flag"
 	bc "github.com/Rascal0814/boot/config"
 	blog "github.com/Rascal0814/boot/log"
 	"github.com/Rascal0814/boot/snowflake"
@@ -34,19 +35,21 @@ func newTestApp(Dishes *service.DishesService, Orders *service.OrderService, Mak
 }
 
 var (
-	app *TestApp
-	err error
+	app      *TestApp
+	err      error
+	flagConf string
 )
 
 func init() {
-	app, err = wireApp("test")
+	app, err = wireApp(blog.ServiceName("test"), bc.CPath(flagConf))
 	if err != nil {
 		panic(err)
 	}
+	flag.StringVar(&flagConf, "conf", "../config", "config path, eg: -conf config.yaml")
 }
 
 // wireApp init kratos application.
-func wireApp(serviceName string) (*TestApp, error) {
+func wireApp(serviceName blog.ServiceName, confPath bc.CPath) (*TestApp, error) {
 	panic(wire.Build(
 		blog.NewLogger,
 		snowflake.NewSnowflake,

@@ -7,12 +7,12 @@
 package main
 
 import (
-	"dishes/order-dishes/config"
+	config2 "dishes/order-dishes/config"
 	"dishes/order-dishes/internal/dao"
 	"dishes/order-dishes/internal/dto"
 	"dishes/order-dishes/internal/server"
 	"dishes/order-dishes/internal/service"
-	config2 "github.com/Rascal0814/boot/config"
+	"github.com/Rascal0814/boot/config"
 	"github.com/Rascal0814/boot/kratos/depend"
 	"github.com/Rascal0814/boot/log"
 	"github.com/Rascal0814/boot/snowflake"
@@ -26,15 +26,15 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(serviceName string) (*kratos.App, func(), error) {
-	configConfig, err := config.NewConfig()
+func wireApp(serviceName log.ServiceName, confPath config.CPath) (*kratos.App, func(), error) {
+	configConfig, err := config2.NewConfig(confPath)
 	if err != nil {
 		return nil, nil, err
 	}
 	data := configConfig.Data
 	registrar := depend.NewConsulRegistrar(data)
 	configServer := configConfig.Server
-	db := config2.DefaultDB(configConfig)
+	db := config.DefaultDB(configConfig)
 	logger := log.NewLogger(serviceName)
 	dishDao := dao.NewDishDao(db, logger)
 	dtoDto := dto.NewDto()

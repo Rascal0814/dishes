@@ -21,7 +21,7 @@ import (
 )
 
 // wireApp init kratos application.
-func wireApp(serviceName string) (*kratos.App, func(), error) {
+func wireApp(serviceName blog.ServiceName, confPath bc.CPath) (*kratos.App, func(), error) {
 	panic(wire.Build(
 		//log.ProvideLogger,
 		depend.NewConsulRegistrar,

@@ -11,6 +11,6 @@ var ProviderSet = wire.NewSet(
 	wire.FieldsOf(new(*bc.Config), "Server", "Data"),
 )
 
-func NewConfig() (*bc.Config, error) {
-	return bc.LoadConfig()
+func NewConfig(confPath bc.CPath) (*bc.Config, error) {
+	return bc.LoadConfig(confPath)
 }

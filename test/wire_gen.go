@@ -7,11 +7,12 @@
 package test
 
 import (
-	"dishes/order-dishes/config"
+	config2 "dishes/order-dishes/config"
 	"dishes/order-dishes/internal/dao"
 	"dishes/order-dishes/internal/dto"
 	"dishes/order-dishes/internal/service"
-	config2 "github.com/Rascal0814/boot/config"
+	"flag"
+	"github.com/Rascal0814/boot/config"
 	"github.com/Rascal0814/boot/log"
 	"github.com/Rascal0814/boot/snowflake"
 )
@@ -19,12 +20,12 @@ import (
 // Injectors from wire.go:
 
 // wireApp init kratos application.
-func wireApp(serviceName string) (*TestApp, error) {
-	configConfig, err2 := config.NewConfig()
+func wireApp(serviceName log.ServiceName, confPath config.CPath) (*TestApp, error) {
+	configConfig, err2 := config2.NewConfig(confPath)
 	if err2 != nil {
 		return nil, err
 	}
-	db := config2.DefaultDB(configConfig)
+	db := config.DefaultDB(configConfig)
 	logger := log.NewLogger(serviceName)
 	dishDao := dao.NewDishDao(db, logger)
 	dtoDto := dto.NewDto()
@@ -50,11 +51,11 @@ type TestApp struct {
 	Dishes   *service.DishesService
 	Orders   *service.OrderService
 	MakeStep *service.MakeStepsService
-	Config   *config2.Config
+	Config   *config.Config
 	log      *log.Logger
 }
 
-func newTestApp(Dishes *service.DishesService, Orders *service.OrderService, MakeStep *service.MakeStepsService, Config *config2.Config, log2 *log.Logger) (*TestApp, error) {
+func newTestApp(Dishes *service.DishesService, Orders *service.OrderService, MakeStep *service.MakeStepsService, Config *config.Config, log2 *log.Logger) (*TestApp, error) {
 	return &TestApp{
 		Dishes:   Dishes,
 		Orders:   Orders,
@@ -65,12 +66,14 @@ func newTestApp(Dishes *service.DishesService, Orders *service.OrderService, Mak
 }
 
 var (
-	app *TestApp
-	err error
+	app      *TestApp
+	err      error
+	flagConf string
 )
 
 func init() {
-	app, err = wireApp("test")
+	flag.StringVar(&flagConf, "conf", "../config", "config path, eg: -conf config.yaml")
+	app, err = wireApp(log.ServiceName("test"), config.CPath(flagConf))
 	if err != nil {
 		panic(err)
 	}
